@@ -15,8 +15,7 @@ public class PostagemDAO {
             + "FROM postagem p INNER JOIN usuario u ON u.id = p.autor_id ";
 
     public void cadastrar(Postagem postagem) throws Exception {
-        String sql = "INSERT INTO postagem "
-                + "(titulo, conteudo, imagem, autor_id, status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO postagem " + "(titulo, conteudo, imagem, autor_id, status) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = ConexaoDB.getConexao();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -30,14 +29,12 @@ public class PostagemDAO {
     }
 
     public List<Postagem> listarPublicadas() throws Exception {
-        String sql = COLUNAS
-                + "WHERE p.status = 'PUBLICADA' ORDER BY p.data_publicacao DESC";
+        String sql = COLUNAS + "WHERE p.status = 'PUBLICADA' ORDER BY p.data_publicacao DESC";
         return consultar(sql);
     }
 
     public List<Postagem> listarPorAutor(int autorId) throws Exception {
-        String sql = COLUNAS
-                + "WHERE p.autor_id = ? ORDER BY p.data_publicacao DESC";
+        String sql = COLUNAS + "WHERE p.autor_id = ? ORDER BY p.data_publicacao DESC";
         List<Postagem> postagens = new ArrayList<>();
 
         try (Connection connection = ConexaoDB.getConexao();
