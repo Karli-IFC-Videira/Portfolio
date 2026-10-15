@@ -16,8 +16,7 @@ public class LoginController extends HttpServlet {
     private final UsuarioDAO usuarioDao = new UsuarioDAO();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String rota = request.getServletPath();
 
         if ("/login".equals(rota)) {
@@ -33,8 +32,7 @@ public class LoginController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String rota = request.getServletPath();
 
@@ -46,13 +44,16 @@ public class LoginController extends HttpServlet {
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-        } catch (Exception exception) {
-            throw new ServletException("Erro ao processar a autenticação.", exception);
+        } catch (Exception ex) {
+            getServletContext().log("Erro ao processar a requisição: " + rota, ex);
+
+            if (!response.isCommitted()) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
         }
     }
 
-    private void entrar(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+    private void entrar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         Usuario usuario = usuarioDao.autenticar(email, senha);
@@ -60,15 +61,14 @@ public class LoginController extends HttpServlet {
         if (usuario == null) {
             request.setAttribute("erro", "E-mail ou senha inválidos.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
+            return; // Encerre a execução deste método imediatamente./Não execute mais nada neste método
         }
 
         request.getSession().setAttribute("usuarioLogado", usuario);
         response.sendRedirect("minhasPostagens");
     }
 
-    private void cadastrar(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+    private void cadastrar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");

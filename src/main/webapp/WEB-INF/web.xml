@@ -17,5 +17,20 @@
             <include-coda>/footer.jsp</include-coda>
         </jsp-property-group>
     </jsp-config>
+    
+    <error-page>
+    	<error-code>404</error-code>
+    	<location>/WEB-INF/erros/erro404.jsp</location>
+	</error-page>
+
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/WEB-INF/erros/erro500.jsp</location>
+	</error-page>
+
+	<error-page>
+	    <exception-type>java.lang.Exception</exception-type>
+	    <location>/WEB-INF/erros/erroGeral.jsp</location>
+	</error-page>
 
 </web-app>

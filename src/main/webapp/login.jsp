@@ -6,9 +6,11 @@
         <div class="alert alert-success"><%= session.getAttribute("successMessage") %></div>
         <% session.removeAttribute("successMessage"); %>
     <% } %>
+    
     <% if (request.getAttribute("erro") != null) { %>
         <div class="alert alert-danger"><%= request.getAttribute("erro") %></div>
     <% } %>
+    
     <form action="login" method="post">
         <div class="mb-3">
             <label class="form-label" for="email">E-mail</label>
