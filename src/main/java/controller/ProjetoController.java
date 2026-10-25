@@ -21,19 +21,8 @@ import model.Usuario;
  *
  * @author Jesus Munoz
  */
-@WebServlet(
-    name = "ProjetoController",
-    urlPatterns = {
-        "/ProjetoController",
-        "/cadastroProjeto",
-        "/listaProjeto",
-        "/editarProjeto",
-        "/selecaoProjeto",
-        "/excluirProjeto"
-    }
-)
+@WebServlet(name = "ProjetoController",urlPatterns = {"/ProjetoController", "/cadastroProjeto", "/listaProjeto", "/editarProjeto", "/selecaoProjeto", "/excluirProjeto"})
 public class ProjetoController extends HttpServlet {
-
     private static final long serialVersionUID = 1L;
 
     /*
@@ -101,7 +90,6 @@ public class ProjetoController extends HttpServlet {
              * consultar o banco de dados e obter os projetos.
              */
             if (rota.equals("/listaProjeto")) {
-
                 listarProj(request, response);
 
             /*
@@ -110,7 +98,6 @@ public class ProjetoController extends HttpServlet {
              * informações para a página de edição.
              */
             } else if (rota.equals("/selecaoProjeto")) {
-
                 listarProjetos(request, response);
 
             /*
@@ -118,9 +105,7 @@ public class ProjetoController extends HttpServlet {
              * antes de retornar para a lista de projetos.
              */
             } else if (rota.equals("/excluirProjeto")) {
-
                 excluirProjeto(request, response);
-
             } else {
 
                 /*
@@ -141,7 +126,6 @@ public class ProjetoController extends HttpServlet {
                     request.getRequestDispatcher(pagina).forward(request, response);
 
                 } else {
-
                     /*
                      * Caso a rota não esteja configurada,
                      * retorna o status HTTP 404.
@@ -168,13 +152,11 @@ public class ProjetoController extends HttpServlet {
      * servidor, como cadastrar ou editar um projeto.
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String rota = request.getServletPath();
 
         try {
-
             if (!exigirLogin(request, response)) {
                 return;
             }
@@ -184,7 +166,6 @@ public class ProjetoController extends HttpServlet {
              * e chama o método responsável por inserir o projeto.
              */
             if (rota.equals("/cadastroProjeto")) {
-
                 inserirProjeto(request, response);
 
             /*
@@ -192,9 +173,7 @@ public class ProjetoController extends HttpServlet {
              * e chama o método responsável por alterar o projeto.
              */
             } else if (rota.equals("/editarProjeto")) {
-
                 editarProjeto(request, response);
-
             } else {
 
                 /*
@@ -205,7 +184,6 @@ public class ProjetoController extends HttpServlet {
             }
 
         } catch (Exception ex) {
-
             Logger.getLogger(ProjetoController.class.getName()).log(Level.SEVERE, "Erro ao processar a requisição.", ex);
         }
     }
@@ -226,8 +204,7 @@ public class ProjetoController extends HttpServlet {
      * Consulta todos os projetos cadastrados no banco de dados
      * e encaminha a lista para a página listaProjeto.jsp.
      */
-    protected void listarProj(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+    protected void listarProj(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
 
         /*
          * Consulta o banco de dados através do DAO.
@@ -255,8 +232,7 @@ public class ProjetoController extends HttpServlet {
      * Esse método é utilizado quando o usuário deseja editar
      * um projeto existente.
      */
-    protected void listarProjetos(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+    protected void listarProjetos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
 
         /*
          * Recupera o ID enviado através da requisição.
@@ -264,8 +240,7 @@ public class ProjetoController extends HttpServlet {
          * Como getParameter() retorna uma String, é necessário
          * converter o valor para int.
          */
-        int id = Integer.parseInt(request.getParameter("id")
-        );
+        int id = Integer.parseInt(request.getParameter("id"));
 
         /*
          * Define o ID do objeto que será utilizado na consulta.
@@ -288,8 +263,7 @@ public class ProjetoController extends HttpServlet {
         request.setAttribute("descricao", listaProjeto.getDescricao());
         request.setAttribute("link", listaProjeto.getLink());
         request.setAttribute("tecnologias", listaProjeto.getTecnologias());
-        request.setAttribute("data_criacao", listaProjeto.getData_criacao()
-        );
+        request.setAttribute("data_criacao", listaProjeto.getData_criacao());
 
         /*
          * Encaminha os dados para o formulário de edição.
@@ -301,8 +275,7 @@ public class ProjetoController extends HttpServlet {
      * Recebe os dados enviados pelo formulário de cadastro
      * e insere um novo projeto no banco de dados.
      */
-    protected void inserirProjeto(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+    protected void inserirProjeto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
 
         /*
          * Define a codificação dos dados recebidos.
@@ -342,11 +315,8 @@ public class ProjetoController extends HttpServlet {
          * um redirect.
          */
         if (cadastro) {
-
             request.getSession().setAttribute("successMessage", "Projeto cadastrado com sucesso!");
-
         } else {
-
             request.getSession().setAttribute("errorMessage", "Erro ao cadastrar o projeto!");
         }
 
@@ -384,31 +354,20 @@ public class ProjetoController extends HttpServlet {
         /*
          * Cria um objeto Projeto contendo o ID e os novos dados.
          */
-        Projeto projeto = new Projeto(
-                id,
-                titulo,
-                descricao,
-                link,
-                tecnologias,
-                dataCriacao
-        );
+        Projeto projeto = new Projeto(id, titulo, descricao, link, tecnologias, dataCriacao);
 
         /*
          * Solicita ao DAO que atualize o registro no banco.
          */
-        boolean editado =
-                projetoDao.alterarProjeto(projeto);
+        boolean editado = projetoDao.alterarProjeto(projeto);
 
         /*
          * Armazena uma mensagem na sessão informando
          * o resultado da operação.
          */
         if (editado) {
-
             request.getSession().setAttribute("successMessage", "Registro editado com sucesso!");
-
         } else {
-
             request.getSession().setAttribute("errorMessage", "Erro ao editar o registro!");
         }
 
@@ -421,17 +380,12 @@ public class ProjetoController extends HttpServlet {
     /**
      * Exclui um projeto utilizando seu ID.
      */
-    protected void excluirProjeto(
-            HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+    protected void excluirProjeto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
 
         /*
          * Recupera o ID do projeto que será excluído.
          */
-        int id = Integer.parseInt(
-                request.getParameter("id")
-        );
+        int id = Integer.parseInt(request.getParameter("id"));
 
         /*
          * Solicita ao DAO a exclusão do projeto.
@@ -443,11 +397,8 @@ public class ProjetoController extends HttpServlet {
          * da exclusão.
          */
         if (deletado) {
-
             request.getSession().setAttribute("successMessage", "Projeto excluído com sucesso!");
-
         } else {
-
             request.getSession().setAttribute("errorMessage", "Erro ao excluir o projeto!");
         }
 
