@@ -1,4 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!-- 
+
 <jsp:include page="header.jsp" />
 <div class="container">
     <h1>Criar usuário</h1>
@@ -23,8 +24,8 @@
     </form>
 </div>
 <jsp:include page="footer.jsp" />
+-->
 
-<!-- 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
@@ -79,4 +80,4 @@
 </div>
 
 <jsp:include page="footer.jsp" />
- -->
+ 
